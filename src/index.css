@@ -2,41 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* HelpHive Design System - Eco-friendly + Futuristic + Playful
+All colors MUST be HSL. Semantic tokens for consistent theming.
 */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Background System */
+    --background: 120 20% 98%;
+    --background-secondary: 120 15% 96%;
+    --foreground: 150 15% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Card System */
+    --card: 120 25% 99%;
+    --card-secondary: 120 20% 97%;
+    --card-foreground: 150 15% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* Primary - Eco Green */
+    --primary: 142 76% 36%;
+    --primary-light: 142 71% 45%;
+    --primary-dark: 142 81% 28%;
+    --primary-foreground: 120 25% 99%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Secondary - Nature Yellow */
+    --secondary: 45 93% 58%;
+    --secondary-light: 45 93% 68%;
+    --secondary-dark: 45 93% 48%;
+    --secondary-foreground: 150 15% 15%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Accent - Future Blue */
+    --accent: 217 91% 60%;
+    --accent-light: 217 91% 70%;
+    --accent-dark: 217 91% 50%;
+    --accent-foreground: 120 25% 99%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Supporting Colors */
+    --muted: 120 10% 94%;
+    --muted-foreground: 150 8% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Semantic Colors */
+    --success: 142 76% 36%;
+    --success-foreground: 120 25% 99%;
+    --warning: 45 93% 58%;
+    --warning-foreground: 150 15% 15%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 120 25% 99%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Interactive Elements */
+    --border: 120 15% 85%;
+    --input: 120 20% 95%;
+    --ring: 142 76% 36%;
+    --popover: 120 25% 99%;
+    --popover-foreground: 150 15% 15%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--primary-light)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary-dark)) 0%, hsl(var(--accent-dark)) 50%, hsl(var(--secondary)) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--background-secondary)) 100%);
 
-    --radius: 0.5rem;
+    /* Shadows & Effects */
+    --shadow-eco: 0 4px 20px hsl(var(--primary) / 0.1);
+    --shadow-float: 0 8px 32px hsl(var(--primary) / 0.15);
+    --shadow-glow: 0 0 40px hsl(var(--accent) / 0.2);
+    --glow-primary: 0 0 20px hsl(var(--primary) / 0.3);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --radius: 1rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +137,49 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-[Inter,system-ui,sans-serif] antialiased;
+  }
+}
+
+@layer utilities {
+  /* Gradient Utilities */
+  .gradient-primary { background: var(--gradient-primary); }
+  .gradient-secondary { background: var(--gradient-secondary); }
+  .gradient-hero { background: var(--gradient-hero); }
+  .gradient-card { background: var(--gradient-card); }
+  
+  /* Shadow Utilities */
+  .shadow-eco { box-shadow: var(--shadow-eco); }
+  .shadow-float { box-shadow: var(--shadow-float); }
+  .shadow-glow { box-shadow: var(--shadow-glow); }
+  .glow-primary { box-shadow: var(--glow-primary); }
+  
+  /* Animation Utilities */
+  .transition-smooth { transition: var(--transition-smooth); }
+  .transition-bounce { transition: var(--transition-bounce); }
+  
+  /* Interactive Effects */
+  .hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-float);
+  }
+  
+  .hover-glow:hover {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .pulse-eco {
+    animation: pulse-eco 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  @keyframes pulse-eco {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
   }
 }
