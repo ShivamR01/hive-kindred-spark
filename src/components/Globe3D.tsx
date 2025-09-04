@@ -1,166 +1,172 @@
-import { useRef, useMemo } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { Sphere, Float, Text3D, OrbitControls } from '@react-three/drei'
-import * as THREE from 'three'
+import { useRef, useMemo } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Sphere, Float, OrbitControls, Stars } from "@react-three/drei";
+import * as THREE from "three";
 
-// Floating donation icons component
-function FloatingIcons() {
-  const groupRef = useRef<THREE.Group>(null)
-  
-  // Define donation items positions around the globe
-  const items = useMemo(() => [
-    { position: [2.2, 0.5, 0.8], icon: '📚', color: '#4ade80' },
-    { position: [-1.8, 1.2, 1.5], icon: '👕', color: '#60a5fa' },
-    { position: [0.5, -2.1, 1.2], icon: '💻', color: '#f59e0b' },
-    { position: [-2.0, -0.8, -1.1], icon: '🎒', color: '#ec4899' },
-    { position: [1.5, 1.8, -1.0], icon: '🍎', color: '#10b981' },
-    { position: [-0.3, 2.2, 0.5], icon: '🧸', color: '#8b5cf6' },
-  ], [])
+// 🌍 Globe with bigger green dots
+function Globe() {
+  const globeRef = useRef<THREE.Mesh>(null);
 
   useFrame((state) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.getElapsedTime() * 0.1
+    if (globeRef.current) {
+      globeRef.current.rotation.y = state.clock.getElapsedTime() * 0.15; // faster rotation
     }
-  })
+  });
+
+  // Texture with blue + green dots
+  const texture = useMemo(() => {
+    const size = 512;
+    const canvas = document.createElement("canvas");
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext("2d")!;
+
+    // Ocean gradient
+    const gradient = ctx.createRadialGradient(
+      size / 2,
+      size / 2,
+      size / 6,
+      size / 2,
+      size / 2,
+      size / 1.2
+    );
+    gradient.addColorStop(0, "#1e90ff");
+    gradient.addColorStop(1, "#0b3d91");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, size, size);
+
+    // Larger green dots
+    ctx.fillStyle = "rgba(34,139,34,0.85)";
+    for (let i = 0; i < 200; i++) {
+      const x = Math.random() * size;
+      const y = Math.random() * size;
+      const r = Math.random() * 6 + 2; // bigger dots
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    return new THREE.CanvasTexture(canvas);
+  }, []);
+
+  return (
+    <Sphere ref={globeRef} args={[2.3, 64, 64]}>
+      <meshStandardMaterial map={texture} metalness={0.15} roughness={0.9} />
+    </Sphere>
+  );
+}
+
+// 🎁 Donation Item
+function DonationItem({
+  position,
+  icon,
+}: {
+  position: [number, number, number];
+  icon: string;
+}) {
+  const texture = useMemo(() => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 128;
+    canvas.height = 128;
+    const ctx = canvas.getContext("2d")!;
+    ctx.clearRect(0, 0, 128, 128);
+    ctx.font = "80px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(icon, 64, 64);
+    return new THREE.CanvasTexture(canvas);
+  }, [icon]);
+
+  return (
+    <Float speed={3} rotationIntensity={2} floatIntensity={2}>
+      <mesh position={position}>
+        <planeGeometry args={[0.9, 0.9]} />
+        <meshStandardMaterial map={texture} transparent />
+      </mesh>
+    </Float>
+  );
+}
+
+// 🎁 More Donation Items
+function DonationItems() {
+  const groupRef = useRef<THREE.Group>(null);
+
+  const items = useMemo(() => {
+    const icons = ["📚", "👕", "💻", "🎒", "🍎", "🧸", "🥾", "🩺", "🍞", "💧"];
+    const positions: { position: [number, number, number]; icon: string }[] = [];
+
+    for (let i = 0; i < 20; i++) {
+      const angle = (i / 20) * Math.PI * 2;
+      const radius = 5 + Math.random() * 1.5;
+      positions.push({
+        position: [
+          Math.cos(angle) * radius,
+          (Math.random() - 0.5) * 5,
+          Math.sin(angle) * radius,
+        ],
+        icon: icons[i % icons.length],
+      });
+    }
+
+    return positions;
+  }, []);
+
+  // Rotate faster
+  useFrame((state) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y = state.clock.getElapsedTime() * 0.25;
+    }
+  });
 
   return (
     <group ref={groupRef}>
-      {items.map((item, index) => (
-        <Float
-          key={index}
-          speed={1.5 + index * 0.2}
-          rotationIntensity={0.5}
-          floatIntensity={0.8}
-        >
-          <mesh position={item.position as [number, number, number]}>
-            <planeGeometry args={[0.4, 0.4]} />
-            <meshBasicMaterial transparent>
-              <canvasTexture
-                attach="map"
-                image={(() => {
-                  const canvas = document.createElement('canvas')
-                  canvas.width = 64
-                  canvas.height = 64
-                  const ctx = canvas.getContext('2d')!
-                  ctx.font = '40px Arial'
-                  ctx.textAlign = 'center'
-                  ctx.textBaseline = 'middle'
-                  ctx.fillText(item.icon, 32, 32)
-                  return canvas
-                })()}
-              />
-            </meshBasicMaterial>
-          </mesh>
-        </Float>
+      {items.map((item, i) => (
+        <DonationItem key={i} {...item} />
       ))}
     </group>
-  )
+  );
 }
 
-// Globe component
-function Globe() {
-  const globeRef = useRef<THREE.Mesh>(null)
-  
-  useFrame((state) => {
-    if (globeRef.current) {
-      globeRef.current.rotation.y = state.clock.getElapsedTime() * 0.05
-    }
-  })
-
-  // Create earth-like texture with professional green tones
-  const earthMaterial = useMemo(() => {
-    return new THREE.MeshPhongMaterial({
-      color: new THREE.Color('hsl(147, 25%, 35%)'),
-      shininess: 0.1,
-      transparent: true,
-      opacity: 0.9,
-    })
-  }, [])
-
+// 🌌 Background
+function Background() {
   return (
-    <Sphere ref={globeRef} args={[1.5, 32, 32]} material={earthMaterial}>
-      <meshPhongMaterial
-        color="hsl(147, 25%, 35%)"
-        shininess={0.1}
-        transparent
-        opacity={0.9}
-      />
-    </Sphere>
-  )
+    <>
+      <Stars radius={100} depth={60} count={6000} factor={4} fade />
+      <color attach="background" args={["#02030f"]} />
+    </>
+  );
 }
 
-// Ambient particles
-function Particles() {
-  const particlesRef = useRef<THREE.Points>(null)
-  
-  const particlesGeometry = useMemo(() => {
-    const geometry = new THREE.BufferGeometry()
-    const positions = new Float32Array(200 * 3)
-    
-    for (let i = 0; i < 200; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 10
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 10
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 10
-    }
-    
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
-    return geometry
-  }, [])
-
-  useFrame((state) => {
-    if (particlesRef.current) {
-      particlesRef.current.rotation.y = state.clock.getElapsedTime() * 0.02
-      particlesRef.current.rotation.x = state.clock.getElapsedTime() * 0.01
-    }
-  })
-
-  return (
-    <points ref={particlesRef} geometry={particlesGeometry}>
-      <pointsMaterial
-        color="hsl(147, 30%, 45%)"
-        size={0.02}
-        transparent
-        opacity={0.6}
-      />
-    </points>
-  )
-}
-
+// 🎬 Main Scene
 export default function Globe3D() {
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-screen">
       <Canvas
-        camera={{ position: [0, 0, 5], fov: 60 }}
-        style={{ background: 'transparent' }}
+        shadows
+        camera={{ position: [0, 0, 9], fov: 50 }}
+        gl={{ antialias: true }}
       >
-        {/* Lighting */}
-        <ambientLight intensity={0.4} />
-        <directionalLight 
-          position={[5, 5, 5]} 
-          intensity={0.8}
-          color="hsl(144, 20%, 75%)"
-        />
-        <pointLight 
-          position={[-5, -5, -5]} 
-          intensity={0.3}
-          color="hsl(15, 30%, 65%)"
-        />
-        
-        {/* Globe and elements */}
+        {/* Lights */}
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[6, 5, 6]} intensity={1.2} castShadow />
+        <hemisphereLight intensity={0.6} groundColor="#222" />
+
+        {/* Globe */}
         <Globe />
-        <FloatingIcons />
-        <Particles />
-        
+
+        {/* More & faster items */}
+        <DonationItems />
+
+        <Background />
+
         {/* Controls */}
         <OrbitControls
           enableZoom={false}
           enablePan={false}
           autoRotate
-          autoRotateSpeed={0.5}
-          maxPolarAngle={Math.PI / 2}
-          minPolarAngle={Math.PI / 2}
+          autoRotateSpeed={1.2}
         />
       </Canvas>
     </div>
-  )
+  );
 }
