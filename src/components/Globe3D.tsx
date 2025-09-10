@@ -1,10 +1,11 @@
 import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Sphere, Float, OrbitControls, Stars } from "@react-three/drei";
+import { useIsMobile } from "@/hooks/use-mobile";
 import * as THREE from "three";
 
 // 🌍 Globe with bigger green dots
-function Globe() {
+function Globe({ isMobile }: { isMobile: boolean }) {
   const globeRef = useRef<THREE.Mesh>(null);
 
   useFrame((state) => {
@@ -49,8 +50,11 @@ function Globe() {
     return new THREE.CanvasTexture(canvas);
   }, []);
 
+  // Responsive globe size
+  const globeSize = isMobile ? 1.8 : 2.3;
+
   return (
-    <Sphere ref={globeRef} args={[2.3, 64, 64]}>
+    <Sphere ref={globeRef} args={[globeSize, 64, 64]}>
       <meshStandardMaterial map={texture} metalness={0.15} roughness={0.9} />
     </Sphere>
   );
@@ -275,11 +279,16 @@ function Background() {
 
 // 🎬 Main Scene
 export default function Globe3D() {
+  const isMobile = useIsMobile();
+  
   return (
-    <div className="w-full h-screen">
+    <div className="w-full h-full">
       <Canvas
         shadows
-        camera={{ position: [0, 0, 9], fov: 50 }}
+        camera={{ 
+          position: [0, 0, isMobile ? 12 : 9], 
+          fov: isMobile ? 65 : 50 
+        }}
         gl={{ antialias: true }}
       >
         {/* Lights */}
@@ -288,7 +297,7 @@ export default function Globe3D() {
         <hemisphereLight intensity={0.6} groundColor="#222" />
 
         {/* Globe */}
-        <Globe />
+        <Globe isMobile={isMobile} />
 
         {/* More & faster items */}
         <DonationItems />

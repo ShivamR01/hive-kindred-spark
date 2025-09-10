@@ -76,8 +76,8 @@ export default function Hero() {
           transition={{ duration: 1, delay: 0.4 }}
           className="relative"
         >
-          <div className="relative w-full h-[400px] sm:h-[500px] lg:h-[600px]">
-            <div className="absolute inset-0 glass rounded-2xl sm:rounded-3xl shadow-large overflow-hidden">
+          <div className="relative w-full h-[350px] sm:h-[450px] lg:h-[550px]">
+            <div className="absolute inset-0 glass rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-large overflow-hidden">
               <Suspense fallback={
                 <div className="w-full h-full flex items-center justify-center">
                   <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" />
