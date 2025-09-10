@@ -87,7 +87,7 @@ function DonationItem({
   );
 }
 
-// 🎁 More Donation Items
+// 🎁 More Donation Items with Enhanced Objects
 function DonationItems() {
   const groupRef = useRef<THREE.Group>(null);
 
@@ -95,6 +95,7 @@ function DonationItems() {
     const icons = ["📚", "👕", "💻", "🎒", "🍎", "🧸", "🥾", "🩺", "🍞", "💧"];
     const positions: { position: [number, number, number]; icon: string }[] = [];
 
+    // Main donation items ring
     for (let i = 0; i < 20; i++) {
       const angle = (i / 20) * Math.PI * 2;
       const radius = 5 + Math.random() * 1.5;
@@ -127,6 +128,141 @@ function DonationItems() {
   );
 }
 
+// 🌟 Orbital Rings - Additional rotating objects
+function OrbitalRings() {
+  const innerRingRef = useRef<THREE.Group>(null);
+  const outerRingRef = useRef<THREE.Group>(null);
+  const particleRingRef = useRef<THREE.Group>(null);
+
+  const ringItems = useMemo(() => {
+    const innerItems: Array<{ position: [number, number, number]; scale: number; icon: string }> = [];
+    const outerItems: Array<{ position: [number, number, number]; scale: number; icon: string }> = [];
+    const particles: Array<{ position: [number, number, number] }> = [];
+
+    // Inner ring - smaller items
+    for (let i = 0; i < 12; i++) {
+      const angle = (i / 12) * Math.PI * 2;
+      const radius = 3.5;
+      innerItems.push({
+        position: [Math.cos(angle) * radius, 0, Math.sin(angle) * radius] as [number, number, number],
+        scale: 0.6,
+        icon: ["🌱", "♻️", "🌿", "💚"][i % 4],
+      });
+    }
+
+    // Outer ring - environmental symbols
+    for (let i = 0; i < 8; i++) {
+      const angle = (i / 8) * Math.PI * 2;
+      const radius = 7.5;
+      outerItems.push({
+        position: [Math.cos(angle) * radius, Math.sin(angle * 2) * 1.5, Math.sin(angle) * radius] as [number, number, number],
+        scale: 0.8,
+        icon: ["🌍", "🤝", "🏠", "🔧"][i % 4],
+      });
+    }
+
+    // Particle ring - small glowing dots
+    for (let i = 0; i < 30; i++) {
+      const angle = (i / 30) * Math.PI * 2;
+      const radius = 8.5 + Math.sin(i * 0.5) * 0.5;
+      particles.push({
+        position: [
+          Math.cos(angle) * radius,
+          Math.sin(angle * 3) * 2,
+          Math.sin(angle) * radius
+        ] as [number, number, number],
+      });
+    }
+
+    return { innerItems, outerItems, particles };
+  }, []);
+
+  useFrame((state) => {
+    if (innerRingRef.current) {
+      innerRingRef.current.rotation.y = state.clock.getElapsedTime() * 0.3;
+      innerRingRef.current.rotation.x = Math.sin(state.clock.getElapsedTime() * 0.5) * 0.1;
+    }
+    if (outerRingRef.current) {
+      outerRingRef.current.rotation.y = -state.clock.getElapsedTime() * 0.2;
+      outerRingRef.current.rotation.z = Math.sin(state.clock.getElapsedTime() * 0.3) * 0.05;
+    }
+    if (particleRingRef.current) {
+      particleRingRef.current.rotation.y = state.clock.getElapsedTime() * 0.4;
+      particleRingRef.current.rotation.x = state.clock.getElapsedTime() * 0.1;
+    }
+  });
+
+  return (
+    <>
+      {/* Inner Ring */}
+      <group ref={innerRingRef}>
+        {ringItems.innerItems.map((item, i) => (
+          <Float key={`inner-${i}`} speed={2} rotationIntensity={1} floatIntensity={1}>
+            <mesh position={item.position} scale={item.scale}>
+              <planeGeometry args={[0.7, 0.7]} />
+              <meshStandardMaterial
+                map={(() => {
+                  const canvas = document.createElement("canvas");
+                  canvas.width = 64;
+                  canvas.height = 64;
+                  const ctx = canvas.getContext("2d")!;
+                  ctx.clearRect(0, 0, 64, 64);
+                  ctx.font = "48px Arial";
+                  ctx.textAlign = "center";
+                  ctx.textBaseline = "middle";
+                  ctx.fillText(item.icon, 32, 32);
+                  return new THREE.CanvasTexture(canvas);
+                })()}
+                transparent
+              />
+            </mesh>
+          </Float>
+        ))}
+      </group>
+
+      {/* Outer Ring */}
+      <group ref={outerRingRef}>
+        {ringItems.outerItems.map((item, i) => (
+          <Float key={`outer-${i}`} speed={1.5} rotationIntensity={2} floatIntensity={1.5}>
+            <mesh position={item.position} scale={item.scale}>
+              <planeGeometry args={[1.0, 1.0]} />
+              <meshStandardMaterial
+                map={(() => {
+                  const canvas = document.createElement("canvas");
+                  canvas.width = 96;
+                  canvas.height = 96;
+                  const ctx = canvas.getContext("2d")!;
+                  ctx.clearRect(0, 0, 96, 96);
+                  ctx.font = "64px Arial";
+                  ctx.textAlign = "center";
+                  ctx.textBaseline = "middle";
+                  ctx.fillText(item.icon, 48, 48);
+                  return new THREE.CanvasTexture(canvas);
+                })()}
+                transparent
+              />
+            </mesh>
+          </Float>
+        ))}
+      </group>
+
+      {/* Particle Ring */}
+      <group ref={particleRingRef}>
+        {ringItems.particles.map((particle, i) => (
+          <mesh key={`particle-${i}`} position={particle.position}>
+            <sphereGeometry args={[0.05, 8, 8]} />
+            <meshStandardMaterial
+              color="#4ade80"
+              emissive="#22c55e"
+              emissiveIntensity={0.5}
+            />
+          </mesh>
+        ))}
+      </group>
+    </>
+  );
+}
+
 // 🌌 Background
 function Background() {
   return (
@@ -156,6 +292,9 @@ export default function Globe3D() {
 
         {/* More & faster items */}
         <DonationItems />
+        
+        {/* Enhanced orbital rings */}
+        <OrbitalRings />
 
         <Background />
 

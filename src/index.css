@@ -157,10 +157,28 @@ Muted greens, earthy tones, soft gradients. All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground font-[Inter,system-ui,sans-serif] antialiased;
+    padding-top: 3.5rem; /* Account for fixed navbar on mobile */
+  }
+
+  @media (min-width: 640px) {
+    body {
+      padding-top: 4rem; /* Account for fixed navbar on desktop */
+    }
   }
 }
 
 @layer utilities {
+  /* Responsive Utilities */
+  .min-h-screen-safe {
+    min-height: calc(100vh - 3.5rem);
+  }
+  
+  @media (min-width: 640px) {
+    .min-h-screen-safe {
+      min-height: calc(100vh - 4rem);
+    }
+  }
+
   /* Gradient Utilities */
   .gradient-primary { background: var(--gradient-primary); }
   .gradient-secondary { background: var(--gradient-secondary); }
@@ -207,6 +225,36 @@ Muted greens, earthy tones, soft gradients. All colors MUST be HSL.
     50% {
       opacity: 0.8;
       transform: scale(1.05);
+    }
+  }
+
+  /* Responsive Text and Layout Utilities */
+  .responsive-text {
+    font-size: clamp(0.875rem, 2.5vw, 1.125rem);
+  }
+  
+  .responsive-heading {
+    font-size: clamp(1.5rem, 4vw, 3rem);
+  }
+  
+  .responsive-container {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  @media (min-width: 640px) {
+    .responsive-container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .responsive-container {
+      padding-left: 2rem;
+      padding-right: 2rem;
     }
   }
 }

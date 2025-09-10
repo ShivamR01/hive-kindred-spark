@@ -9,11 +9,11 @@ export default function Hero() {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-background via-background-secondary to-background-tertiary">
       {/* Background Elements */}
       <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-20 left-10 w-72 h-72 gradient-primary rounded-full blur-3xl opacity-20 animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/20 rounded-full blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-10 sm:top-20 left-4 sm:left-10 w-48 sm:w-72 h-48 sm:h-72 gradient-primary rounded-full blur-3xl opacity-20 animate-pulse" />
+        <div className="absolute bottom-10 sm:bottom-20 right-4 sm:right-10 w-64 sm:w-96 h-64 sm:h-96 bg-secondary/20 rounded-full blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }} />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-0 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-screen">
         {/* Content Side */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -37,12 +37,12 @@ export default function Hero() {
             transition={{ delay: 0.3 }}
             className="space-y-4"
           >
-            <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight">
               <span className="font-serif bg-gradient-to-r from-primary via-primary-light to-secondary bg-clip-text text-transparent">
                 Donate. Fix. Empower.
               </span>
             </h1>
-            <p className="text-xl lg:text-2xl text-muted-foreground font-medium leading-relaxed">
+            <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground font-medium leading-relaxed">
               Together at <span className="font-serif font-bold text-foreground">HelpHive</span>
             </p>
           </motion.div>
@@ -76,8 +76,8 @@ export default function Hero() {
           transition={{ duration: 1, delay: 0.4 }}
           className="relative"
         >
-          <div className="relative w-full h-[600px]">
-            <div className="absolute inset-0 glass rounded-3xl shadow-large overflow-hidden">
+          <div className="relative w-full h-[400px] sm:h-[500px] lg:h-[600px]">
+            <div className="absolute inset-0 glass rounded-2xl sm:rounded-3xl shadow-large overflow-hidden">
               <Suspense fallback={
                 <div className="w-full h-full flex items-center justify-center">
                   <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" />

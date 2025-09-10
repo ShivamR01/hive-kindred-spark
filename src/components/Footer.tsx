@@ -33,10 +33,10 @@ const socialLinks = [
 export default function Footer() {
   return (
     <footer className="gradient-hero text-primary-foreground">
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid md:grid-cols-4 gap-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Brand Section */}
-          <div className="md:col-span-1">
+          <div className="sm:col-span-2 lg:col-span-1">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -51,7 +51,7 @@ export default function Footer() {
                 >
                   <Heart className="w-6 h-6 text-secondary" />
                 </motion.div>
-                <span className="text-3xl font-bold">HelpHive</span>
+                <span className="text-2xl sm:text-3xl font-bold">HelpHive</span>
               </Link>
             </motion.div>
             
@@ -60,7 +60,7 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-primary-foreground/80 mb-6 leading-relaxed"
+              className="text-sm sm:text-base text-primary-foreground/80 mb-6 leading-relaxed"
             >
               Turning waste into hope, together. Join our community of changemakers 
               creating positive impact one donation and fix at a time.
@@ -125,17 +125,17 @@ export default function Footer() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5 }}
-          className="border-t border-primary-foreground/20 mt-12 pt-8"
+          className="border-t border-primary-foreground/20 mt-8 sm:mt-12 pt-6 sm:pt-8"
         >
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-primary-foreground/70 text-center md:text-left">
-              <p>&copy; 2024 HelpHive. All rights reserved.</p>
-              <p className="text-sm mt-1">
+          <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
+            <div className="text-primary-foreground/70 text-center lg:text-left">
+              <p className="text-sm sm:text-base">&copy; 2024 HelpHive. All rights reserved.</p>
+              <p className="text-xs sm:text-sm mt-1">
                 <span className="text-secondary">🌱</span> Building a sustainable future, one action at a time.
               </p>
             </div>
             
-            <div className="flex items-center space-x-6 text-sm text-primary-foreground/70">
+            <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6 text-xs sm:text-sm text-primary-foreground/70">
               <div className="flex items-center space-x-2">
                 <MapPin className="w-4 h-4" />
                 <span>San Francisco, CA</span>
