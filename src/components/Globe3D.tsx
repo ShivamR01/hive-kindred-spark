@@ -38,10 +38,10 @@ function Globe({ isMobile }: { isMobile: boolean }) {
 
     // Larger green dots
     ctx.fillStyle = "rgba(34,139,34,0.85)";
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 100; i++) {
       const x = Math.random() * size;
       const y = Math.random() * size;
-      const r = Math.random() * 6 + 2; // bigger dots
+      const r = Math.random() * 35; // bigger dots
       ctx.beginPath();
       ctx.arc(x, y, r, 0, Math.PI * 2);
       ctx.fill();
@@ -102,7 +102,7 @@ function DonationItems() {
     // Main donation items ring
     for (let i = 0; i < 20; i++) {
       const angle = (i / 20) * Math.PI * 2;
-      const radius = 5 + Math.random() * 1.5;
+      const radius = 5 + Math.random() * 0.5;
       positions.push({
         position: [
           Math.cos(angle) * radius,
@@ -149,8 +149,8 @@ function OrbitalRings() {
       const radius = 3.5;
       innerItems.push({
         position: [Math.cos(angle) * radius, 0, Math.sin(angle) * radius] as [number, number, number],
-        scale: 0.6,
-        icon: ["🌱", "♻️", "🌿", "💚"][i % 4],
+        scale: 0.9,
+        icon: ["📱", "🖱️", "⌨️", "🖥️", "🎧", "🔌","🎲", "🪀", "🎮", "🏐", "🎨", "🪁","🥛", "🍌", "🥚", "🍚", "🥗", "☕"][i % 12],
       });
     }
 
@@ -160,8 +160,8 @@ function OrbitalRings() {
       const radius = 7.5;
       outerItems.push({
         position: [Math.cos(angle) * radius, Math.sin(angle * 2) * 1.5, Math.sin(angle) * radius] as [number, number, number],
-        scale: 0.8,
-        icon: ["🌍", "🤝", "🏠", "🔧"][i % 4],
+        scale: 1,
+        icon: ["🔦", "🧭", "🏕️", "🕯️", "🪣","👟", "🧢", "🧥", "🧦", "🕶️"][i % 12],
       });
     }
 
