@@ -134,44 +134,52 @@ export default function Footer() {
             </motion.div>
 
             {/* Newsletter / Contact */}
-            <motion.div variants={item} className="md:col-span-3 space-y-4">
-              <h4 className="text-sm font-semibold text-secondary">Stay in the loop</h4>
-              <p className="text-sm text-primary-foreground/80">Signup for updates, volunteer calls and donation drives (we send very few emails).</p>
+           <motion.div variants={item} className="md:col-span-3 space-y-4">
+  <h4 className="text-sm font-semibold text-secondary">Stay in the loop</h4>
+  <p className="text-sm text-primary-foreground/80">
+    Signup for updates, volunteer calls and donation drives (we send very few emails).
+  </p>
 
-              <form onSubmit={handleSubscribe} className="flex gap-2">
-                <label htmlFor="footer-email" className="sr-only">Email address</label>
-                <input
-                  id="footer-email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@domain.com"
-                  aria-label="Email address"
-                  className="flex-1 py-2 px-3 rounded-md bg-primary-foreground/10 placeholder-primary-foreground/60 text-primary-foreground focus:outline-none focus:ring-2 focus:ring-secondary"
-                />
-                <button
-                  type="submit"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-secondary hover:bg-secondary/90 rounded-md text-sm font-medium transition"
-                >
-                  Subscribe
-                </button>
-              </form>
+  <form
+    onSubmit={handleSubscribe}
+    className="flex flex-col sm:flex-row gap-2 w-full"
+  >
+    <label htmlFor="footer-email" className="sr-only">Email address</label>
+    <input
+      id="footer-email"
+      type="email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      placeholder="you@domain.com"
+      aria-label="Email address"
+      className="flex-1 py-2 px-3 rounded-md bg-primary-foreground/10 placeholder-primary-foreground/60 text-primary-foreground focus:outline-none focus:ring-2 focus:ring-secondary w-full"
+    />
+    <button
+      type="submit"
+      className="mt-2 sm:mt-0 px-4 py-2 bg-secondary hover:bg-secondary/90 rounded-md text-sm font-medium w-full sm:w-auto"
+    >
+      Subscribe
+    </button>
+  </form>
 
-              {status && (
-                <p className={`text-sm ${status.type === "error" ? "text-red-400" : "text-green-400"}`}>{status.message}</p>
-              )}
+  {status && (
+    <p className={`text-sm ${status.type === "error" ? "text-red-400" : "text-green-400"}`}>
+      {status.message}
+    </p>
+  )}
 
-              <div className="mt-2 space-y-2 text-sm text-primary-foreground/80">
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4" />
-                  <span>Ghaziabad, India</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Phone className="w-4 h-4" />
-                  <span>+91 98765 43210</span>
-                </div>
-              </div>
-            </motion.div>
+  <div className="mt-2 space-y-2 text-sm text-primary-foreground/80">
+    <div className="flex items-center gap-2">
+      <MapPin className="w-4 h-4" />
+      <span>Ghaziabad, India</span>
+    </div>
+    <div className="flex items-center gap-2">
+      <Phone className="w-4 h-4" />
+      <span>+91 98765 43210</span>
+    </div>
+  </div>
+</motion.div>
+
           </div>
 
           {/* bottom */}
