@@ -20,14 +20,14 @@ const contactInfo = [
   {
     icon: Phone,
     title: 'Call Us',
-    info: '+1 (555) 123-4567',
-    description: 'Mon-Fri, 9AM-6PM PST',
+    info: '+91 98765 43210',
+    description: 'Mon-Fri, 9AM-6PM IST',
     color: 'text-accent'
   },
   {
     icon: MapPin,
     title: 'Visit Us',
-    info: '123 Eco Street, San Francisco, CA 94102',
+    info: 'Rajnagar Extension, Ghaziabad, India - 201001',
     description: 'Our headquarters',
     color: 'text-secondary-foreground'
   }
@@ -248,11 +248,11 @@ export default function Contact() {
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Monday - Friday</span>
-                      <span className="text-foreground font-medium">9:00 AM - 6:00 PM PST</span>
+                      <span className="text-foreground font-medium">9:00 AM - 6:00 PM IST</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Saturday</span>
-                      <span className="text-foreground font-medium">10:00 AM - 4:00 PM PST</span>
+                      <span className="text-foreground font-medium">10:00 AM - 4:00 PM IST</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Sunday</span>
